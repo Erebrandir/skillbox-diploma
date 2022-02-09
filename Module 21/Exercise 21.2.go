@@ -19,3 +19,17 @@ func main() {
 	fmt.Println(funcUseDefer(3, 5, func(x int, y int) int { return x * y }))
 	fmt.Println(funcUseDefer(4, 6, func(x int, y int) int { return x - y }))
 }
+
+//func main() {
+//	fmt.Println(calculate(func(a, b int) int { return a + b }, 10, 5))
+//	fmt.Println(calculate(func(a, b int) int { return a * b }, 10, 5))
+//	fmt.Println(calculate(func(a, b int) int { return a / b }, 10, 5))
+//}
+//
+//func calculate(operation func(int, int) int, a int, b int) (result int) {
+//	defer func() {
+//		result = operation(5, 4)
+//	}()
+//	result = 0 // эта строка демонстрирует, что функция в defer меняет значение при выходе из функции, ее нужно удалить
+//	return
+//}
