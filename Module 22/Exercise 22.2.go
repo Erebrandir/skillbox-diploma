@@ -26,13 +26,13 @@ func main() {
 
 	index := find(arr, value)
 
-	for i := 0; i < num; i++ {
-		if index > 0 && arr[index] == arr[index-1] {
-			index = index - 1
-		} else {
-			index = 0
-		}
-	}
+	//for i := 0; i < num; i++ {
+	//	if index > 0 && arr[index] == arr[index-1] {
+	//		index = index - 1
+	//	} else {
+	//		index = 0
+	//	}
+	//}
 	fmt.Printf("Value: %v\n", value)
 	fmt.Printf("Index: %v\n", index)
 }
@@ -43,17 +43,34 @@ func find(arr [num]int, value int) (index int) {
 	max := num - 1
 	for max >= min {
 		middle := (max + min) / 2
-		if arr[middle] == value {
-			index = middle
-			break
-		} else if arr[middle] > value {
+		if arr[middle] >= value {
 			max = middle - 1
 		} else {
 			min = middle + 1
+			index = min
+			break
 		}
 	}
 	return
 }
+
+//func find(arr [num]int, value int) (index int) {
+//	index = -1
+//	min := 0
+//	max := num - 1
+//	for max >= min {
+//		middle := (max + min) / 2
+//		if arr[middle] == value {
+//			index = middle
+//			break
+//		} else if arr[middle] > value {
+//			max = middle - 1
+//		} else {
+//			min = middle + 1
+//		}
+//	}
+//	return
+//}
 
 //func find(arr [num]int, value int) (index int) {
 //	index = -1
