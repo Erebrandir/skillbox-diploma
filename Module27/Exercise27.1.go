@@ -40,7 +40,7 @@ func (sm studentMap) put(student *Student) {
 func (sm studentMap) get(studentName string) (*Student, error) {
 	student, ok := sm[studentName]
 	if !ok {
-		return nil, errors.New("Студент не найден!")
+		return nil, errors.New("Студент в базе не найден!")
 	} else {
 		return student, nil
 	}
