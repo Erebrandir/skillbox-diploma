@@ -27,24 +27,30 @@ type Student struct {
 	grade int
 }
 
-//type University struct {
-//	studentMap string
-//}
+type studentMap map[string]*Student
 
-func put(list map[string]*Student, value *Student) error {
-	list[value.name] = value
-	if list[value.name] == nil {
-		return errors.New("Ошибка добавления в хранилище!")
+func newStudentMap() studentMap {
+	return make(map[string]*Student)
+}
+
+func (sm studentMap) put(student *Student) {
+	sm[student.name] = student
+}
+
+func (sm studentMap) get(studentName string) (*Student, error) {
+	student, ok := sm[studentName]
+	if !ok {
+		return nil, errors.New("Студент не найден!")
 	} else {
-		return nil
+		return student, nil
 	}
 }
 
-func get(list map[string]*Student, name string) (*Student, error) {
-	if list[name] == nil {
-		return nil, errors.New("Студент не найден в хранилище!")
-	} else {
-		return list[name], nil
+func newStudent(name string, age int, grade int) *Student {
+	return &Student{
+		name:  name,
+		age:   age,
+		grade: grade,
 	}
 }
 
@@ -53,7 +59,7 @@ func (s Student) info() string {
 }
 
 func main() {
-	studentMap := make(map[string]*Student, 0)
+	studentMap := newStudentMap()
 	fmt.Println("Введите имя студента, возраст и курс:")
 
 	var count = 1
@@ -82,16 +88,13 @@ func main() {
 			continue
 		}
 
-		student := Student{
-			name:  studentName,
-			age:   studentAge,
-			grade: studentGrade,
-		}
+		std := newStudent(studentName, studentAge, studentGrade)
 
-		if _, err := get(studentMap, student.name); err != nil {
-			put(studentMap, &student)
+		_, err = studentMap.get(studentName)
+		if err != nil {
+			studentMap.put(std)
 		} else {
-			fmt.Print("Студент с таким именем уже есть в хранилище! Попробуйте снова.\n")
+			fmt.Print("Студент с таким именем уже есть в хранилище! Попробуйте снова...\n")
 		}
 	}
 
