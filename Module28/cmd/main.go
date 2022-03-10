@@ -14,23 +14,22 @@ import (
 func main() {
 	storage := storage.NewStorage()
 	stdin := bufio.NewReader(os.Stdin)
+	var count = 1
 
-	fmt.Println("Пожалуйста, введите имя, возраст и курс студентов с переносом строки:")
+	fmt.Println("Введите имя студента, возраст и курс:")
 
 	for {
-		fmt.Print("->: ")
 		line, errEOF := stdin.ReadString('\n')
-
 		if errEOF == io.EOF {
-			fmt.Println()
-			fmt.Println("Конец ввода! Список студентов:")
+			fmt.Println("----------------------")
+			fmt.Println("Студенты из хранилища:")
 			break
 		}
 
 		lineFields := strings.Fields(line)
 
 		if len(lineFields) < 3 {
-			fmt.Print("Необходимо ввести имя, возраст и грейд! Пожалуйста, попробуйте снова...\n")
+			fmt.Print("Необходимо ввести имя, возраст и курс! Попробуйте снова.\n")
 			continue
 		}
 
@@ -39,7 +38,7 @@ func main() {
 		studentGrade, errGrade := strconv.Atoi(lineFields[2])
 
 		if errAge != nil || errGrade != nil {
-			fmt.Print("Ошибка при обработке возраста студента или его грейда! Пожалуйста, попробуйте снова...\n")
+			fmt.Print("Ошибка возраста студента и курса! Попробуйте снова.\n")
 			continue
 		}
 
@@ -49,11 +48,12 @@ func main() {
 		if err != nil {
 			storage.Put(std)
 		} else {
-			fmt.Print("Студент с таким именем уже есть в хранилище! Попробуйте снова...\n")
+			fmt.Print("Студент с таким именем уже есть в хранилище!\n")
 		}
 	}
 
 	for _, value := range storage {
-		fmt.Printf("-> %s\n", value.Info())
+		fmt.Printf("%v. %s\n", count, value.Info())
+		count++
 	}
 }

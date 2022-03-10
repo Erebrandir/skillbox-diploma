@@ -5,20 +5,20 @@ import (
 	"errors"
 )
 
-type Storage map[string]*student.Student
+type StudentMap map[string]*student.Student
 
-func NewStorage() Storage {
+func NewStorage() StudentMap {
 	return make(map[string]*student.Student)
 }
 
-func (s Storage) Put(student *student.Student) {
+func (s StudentMap) Put(student *student.Student) {
 	s[student.Name()] = student
 }
 
-func (s Storage) Get(studentName string) (*student.Student, error) {
+func (s StudentMap) Get(studentName string) (*student.Student, error) {
 	student, ok := s[studentName]
 	if !ok {
-		return nil, errors.New("Студент не найден!")
+		return nil, errors.New("Студент в базе не найден!")
 	} else {
 		return student, nil
 	}
