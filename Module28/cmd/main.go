@@ -12,9 +12,8 @@ import (
 )
 
 func main() {
-	storage := storage.NewStorage()
+	storages := *storage.NewUniversity()
 	stdin := bufio.NewReader(os.Stdin)
-	var count = 1
 
 	fmt.Println("Введите имя студента, возраст и курс:")
 
@@ -43,16 +42,17 @@ func main() {
 		}
 
 		std := student.NewStudent(studentName, studentAge, studentGrade)
+		storages.Get()
 
-		_, err := storage.Get(studentName)
+		err := storages.Put(std)
 		if err != nil {
-			storage.Put(std)
-		} else {
 			fmt.Print("Студент с таким именем уже есть в хранилище!\n")
+		} else {
+			continue
 		}
 	}
-
-	for _, value := range storage {
+	count := 1
+	for _, value := range storages.Get() {
 		fmt.Printf("%v. %s\n", count, value.Info())
 		count++
 	}

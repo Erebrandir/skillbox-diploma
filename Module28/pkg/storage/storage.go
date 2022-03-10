@@ -5,21 +5,28 @@ import (
 	"errors"
 )
 
-type StudentMap map[string]*student.Student
-
-func NewStorage() StudentMap {
-	return make(map[string]*student.Student)
+type University struct {
+	studentMap map[string]*student.Student
 }
 
-func (s StudentMap) Put(student *student.Student) {
-	s[student.Name()] = student
-}
-
-func (s StudentMap) Get(studentName string) (*student.Student, error) {
-	student, ok := s[studentName]
-	if !ok {
-		return nil, errors.New("Студент в базе не найден!")
-	} else {
-		return student, nil
+func NewUniversity() *University {
+	return &University{
+		studentMap: make(map[string]*student.Student),
 	}
+}
+
+func (u *University) Put(student *student.Student) error {
+	if _, found := u.studentMap[student.Name()]; !found {
+		u.studentMap[student.Name()] = student
+		return nil
+	}
+	return errors.New("Данный студент уже есть в списке!")
+}
+
+func (u *University) Get() []*student.Student {
+	var students []*student.Student
+	for _, v := range u.studentMap {
+		students = append(students, v)
+	}
+	return students
 }
