@@ -22,7 +22,7 @@ func main() {
 
 		if string(number) != "стоп" {
 			fc := squareOfnNumber(number)
-			sc := multiplicationOfNumber(fc)
+			sc := multiplicationOfNumber(<-fc)
 
 			fmt.Println(<-sc)
 			fmt.Println()
@@ -38,19 +38,18 @@ func squareOfnNumber(num int) chan int {
 	go func() {
 		res := num * num
 		firstChan <- res
+		close(firstChan)
 	}()
-	close(firstChan)
 	return firstChan
 }
 
-func multiplicationOfNumber(firstChan chan int) chan int {
+func multiplicationOfNumber(num int) chan int {
 	secondChan := make(chan int)
-	fmt.Println(<-firstChan)
+	fmt.Println(num)
 	go func() {
-		num := <-firstChan
 		numNew := 2 * num
 		secondChan <- numNew
+		close(secondChan)
 	}()
-	close(secondChan)
 	return secondChan
 }
