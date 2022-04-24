@@ -22,20 +22,19 @@ func NewMongodb() (*mongodb, error) {
 	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
 	client, err := mongo.Connect(ctx, clientOptions)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	err = client.Ping(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	return &mongodb{client: client}, nil
-
 }
 
 func DisconnectDB(client *mongodb) {
 	err := client.client.Disconnect(ctx)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 }
 
@@ -43,7 +42,8 @@ func (r *mongodb) CreateUser(user *entity.User) (string, error) {
 	collection = r.client.Database("usersDB").Collection("users")
 	u, err := collection.InsertOne(ctx, user)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return "", err
 	}
 
 	id := u.InsertedID.(primitive.ObjectID).Hex()
@@ -61,7 +61,8 @@ func (r *mongodb) DeleteUser(id string) (string, error) {
 
 	name := d["Name"].(string)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return "", err
 	}
 	filter := bson.D{{"Friends", id}}
 	fmt.Println(name)
@@ -78,14 +79,16 @@ func (r *mongodb) GetUsers(user *entity.User) []*entity.User {
 	collection = r.client.Database("usersDB").Collection("users")
 	cur, err := collection.Find(ctx, bson.D{})
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		panic(err)
 	}
 	var allUsers []*entity.User
 	for cur.Next(ctx) {
 
 		err := cur.Decode(&user)
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
+			panic(err)
 		}
 		allUsers = append(allUsers, user)
 	}
@@ -104,7 +107,8 @@ func (r *mongodb) UpdateAge(id string, newAge int) error {
 	}
 	_, err = collection.UpdateOne(ctx, filter, update)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return err
 	}
 	return nil
 }
@@ -155,7 +159,8 @@ func (r *mongodb) GetFriends(userId string) ([]string, error) {
 
 	f, err := collection.Find(ctx, bson.D{{"Friends", userId}})
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 	var friends []string
 	for f.Next(ctx) {
