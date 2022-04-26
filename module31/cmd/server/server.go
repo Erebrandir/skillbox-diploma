@@ -7,8 +7,7 @@ import (
 )
 
 func main() {
-	//port := []string{"", ":8080"}
-	//err := app.Run(port[1])
+	//go run server.go :8080
 	port := os.Args
 	err := app.Run(port[1])
 	if err != nil {

@@ -38,11 +38,10 @@ func Run(port string) error {
 		fmt.Println("App close")
 		cancel()
 	}()
-	////////////////////////////////////////////////////////////////
+
 	err = http.ListenAndServe(port, router)
 	if err != nil {
 		return err
 	}
 	return nil
-	////////////////////////////////////////////////////////////////
 }
