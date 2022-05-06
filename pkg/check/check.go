@@ -26,11 +26,9 @@ func IsBandwidth(bandwidth string) bool {
 	if err != nil {
 		return false
 	}
-
 	if i >= 0 && i <= 100 {
 		return true
 	}
-
 	return false
 }
 
@@ -43,7 +41,6 @@ func IsResponseTime(time string) bool {
 	if i >= 0 {
 		return true
 	}
-
 	return false
 }
 
@@ -71,6 +68,12 @@ func IsProviderVoiceCall(provider string) bool {
 	return contains(providers, provider)
 }
 
+func IsProviderEmail(provider string) bool {
+	providers := []string{"Gmail", "Yahoo", "Hotmail", "MSN", "Orange", "Comcast", "AOL",
+		"Live", "RediffMail", "GMX", "Protonmail", "Yandex", "Mail.ru"}
+	return contains(providers, provider)
+}
+
 func IsPositiveInt(value string) bool {
 	i, err := strconv.Atoi(value)
 	if err != nil {
@@ -80,7 +83,6 @@ func IsPositiveInt(value string) bool {
 	if i >= 0 {
 		return true
 	}
-
 	return false
 }
 
@@ -93,6 +95,5 @@ func IsPositiveFloat(value string) bool {
 	if f >= 0 {
 		return true
 	}
-
 	return false
 }

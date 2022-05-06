@@ -22,46 +22,37 @@ type VoiceCallData struct {
 
 func ParseVoiceCallData(line string) (VoiceCallData, bool) {
 	data := strings.Split(line, ";")
-
 	if len(data) != 8 {
 		return VoiceCallData{}, false
 	}
-
 	Country := data[0]
 	if !check.IsCountry(Country) {
 		return VoiceCallData{}, false
 	}
-
 	Bandwidth := data[1]
 	if !check.IsBandwidth(Bandwidth) {
 		return VoiceCallData{}, false
 	}
-
 	ResponseTime := data[2]
 	if !check.IsResponseTime(ResponseTime) {
 		return VoiceCallData{}, false
 	}
-
 	Provider := data[3]
 	if !check.IsProviderVoiceCall(Provider) {
 		return VoiceCallData{}, false
 	}
-
 	ConnectionStability, err := strconv.ParseFloat(data[4], 32)
 	if err != nil {
 		return VoiceCallData{}, false
 	}
-
 	TTFB, err := strconv.Atoi(data[5])
 	if err != nil {
 		return VoiceCallData{}, false
 	}
-
 	VoicePurity, err := strconv.Atoi(data[6])
 	if err != nil {
 		return VoiceCallData{}, false
 	}
-
 	MedianOfCallsTime, err := strconv.Atoi(data[7])
 	if err != nil {
 		return VoiceCallData{}, false
@@ -77,7 +68,6 @@ func ParseVoiceCallData(line string) (VoiceCallData, bool) {
 		VoicePurity:         VoicePurity,
 		MedianOfCallsTime:   MedianOfCallsTime,
 	}
-
 	return elem, true
 }
 
@@ -94,13 +84,10 @@ func StatusVoiceCall(csvFile string) []VoiceCallData {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := scanner.Text()
-
 		elem, ok := ParseVoiceCallData(line)
-
 		if ok {
 			result = append(result, elem)
 		}
 	}
-
 	return result
 }
