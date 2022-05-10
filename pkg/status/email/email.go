@@ -4,7 +4,8 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"skillbox-diploma/pkg/check"
+	"skillbox-diploma/pkg/status/check"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -13,6 +14,40 @@ type EmailData struct {
 	Country      string
 	Provider     string
 	DeliveryTime int
+}
+
+func Get3MinDeliveryTimeByCountry(data []EmailData, code string) []EmailData {
+	result := make([]EmailData, 0)
+	for _, elem := range data {
+		if elem.Country == code {
+			result = append(result, elem)
+		}
+	}
+
+	sort.SliceStable(result, func(i, j int) bool {
+		return result[i].DeliveryTime < result[j].DeliveryTime
+	})
+	if len(result) < 3 {
+		return result
+	}
+	return result[:3]
+}
+
+func Get3MaxDeliveryTimeByCountry(data []EmailData, code string) []EmailData {
+	result := make([]EmailData, 0)
+	for _, elem := range data {
+		if elem.Country == code {
+			result = append(result, elem)
+		}
+	}
+
+	sort.SliceStable(result, func(i, j int) bool {
+		return result[i].DeliveryTime > result[j].DeliveryTime
+	})
+	if len(result) < 3 {
+		return result
+	}
+	return result[:3]
 }
 
 func ParseEmailData(line string) (EmailData, bool) {
@@ -58,13 +93,11 @@ func StatusEmail(csvFile string) []EmailData {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := scanner.Text()
-
 		elem, ok := ParseEmailData(line)
 
 		if ok {
 			result = append(result, elem)
 		}
 	}
-
 	return result
 }

@@ -31,7 +31,6 @@ func StatusSupport(url string) []SupportData {
 		fmt.Println(err.Error())
 		return []SupportData{}
 	}
-
 	if err := json.Unmarshal(body, &result); err != nil {
 		return []SupportData{}
 	}

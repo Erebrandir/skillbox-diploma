@@ -16,9 +16,9 @@ type BillingData struct {
 	CheckoutPage   bool
 }
 
-func ParseBillingData(line string) (BillingData, bool) {
+func ParseBillingData(line string) BillingData {
 	if len(line) != 6 {
-		return BillingData{}, false
+		return BillingData{}
 	}
 
 	var bytes []byte
@@ -30,7 +30,7 @@ func ParseBillingData(line string) (BillingData, bool) {
 		case "1":
 			bytes = append(bytes, 1)
 		default:
-			return BillingData{}, false
+			return BillingData{}
 		}
 	}
 	bytes[0], bytes[5] = bytes[5], bytes[0]
@@ -57,28 +57,23 @@ func ParseBillingData(line string) (BillingData, bool) {
 		FraudControl:   FraudControl,
 		CheckoutPage:   CheckoutPage,
 	}
-
-	return elem, true
+	return elem
 }
 
-func StatusBilling(csvFile string) (BillingData, bool) {
+func StatusBilling(csvFile string) BillingData {
 	file, err := os.Open(csvFile)
 	if err != nil {
 		fmt.Println(err.Error() + `: ` + csvFile)
-		return BillingData{}, false
+		return BillingData{}
 	}
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
 	if scanner.Scan() {
 		line := scanner.Text()
+		elem := ParseBillingData(line)
 
-		elem, ok := ParseBillingData(line)
-
-		if ok {
-			return elem, true
-		}
+		return elem
 	}
-
-	return BillingData{}, false
+	return BillingData{}
 }

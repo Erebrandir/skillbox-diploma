@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"skillbox-diploma/pkg/check"
+	"skillbox-diploma/pkg/status/check"
 	"strconv"
 	"strings"
 )
@@ -25,34 +25,42 @@ func ParseVoiceCallData(line string) (VoiceCallData, bool) {
 	if len(data) != 8 {
 		return VoiceCallData{}, false
 	}
+
 	Country := data[0]
 	if !check.IsCountry(Country) {
 		return VoiceCallData{}, false
 	}
+
 	Bandwidth := data[1]
 	if !check.IsBandwidth(Bandwidth) {
 		return VoiceCallData{}, false
 	}
+
 	ResponseTime := data[2]
 	if !check.IsResponseTime(ResponseTime) {
 		return VoiceCallData{}, false
 	}
+
 	Provider := data[3]
 	if !check.IsProviderVoiceCall(Provider) {
 		return VoiceCallData{}, false
 	}
+
 	ConnectionStability, err := strconv.ParseFloat(data[4], 32)
 	if err != nil {
 		return VoiceCallData{}, false
 	}
+
 	TTFB, err := strconv.Atoi(data[5])
 	if err != nil {
 		return VoiceCallData{}, false
 	}
+
 	VoicePurity, err := strconv.Atoi(data[6])
 	if err != nil {
 		return VoiceCallData{}, false
 	}
+
 	MedianOfCallsTime, err := strconv.Atoi(data[7])
 	if err != nil {
 		return VoiceCallData{}, false

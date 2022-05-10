@@ -24,13 +24,13 @@ func TestStatusIncident(t *testing.T) {
 }
 
 var data = []IncidentData{
-	{Topic: "Доставка SMS в EU", Status: "closed"},
-	{Topic: "Стабильность MMS-соединения", Status: "closed"},
-	{Topic: "Чистота подключения к голосовому вызову", Status: "closed"},
-	{Topic: "Страница оформления заказа закрыта", Status: "closed"},
-	{Topic: "Перезапуск поддержки", Status: "active"},
-	{Topic: "Номер телефона не работает в US", Status: "closed"},
-	{Topic: "API с низкой задержкой", Status: "closed"},
+	{Topic: "SMS delivery in EU", Status: "closed"},
+	{Topic: "MMS connection stability", Status: "closed"},
+	{Topic: "Voice call connection purity", Status: "closed"},
+	{Topic: "Checkout page is down", Status: "closed"},
+	{Topic: "Support overload", Status: "active"},
+	{Topic: "Buy phone number not working in US", Status: "closed"},
+	{Topic: "API Slow latency", Status: "closed"},
 }
 
 type TestHandler struct{}

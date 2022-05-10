@@ -35,6 +35,5 @@ func StatusIncident(url string) []IncidentData {
 	if err := json.Unmarshal(body, &result); err != nil {
 		return []IncidentData{}
 	}
-
 	return result
 }
