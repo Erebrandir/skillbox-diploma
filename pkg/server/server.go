@@ -5,16 +5,21 @@ import (
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+	"os"
+	"skillbox-diploma/pkg/config"
 	"skillbox-diploma/pkg/result"
 )
-
-const serverAddr = "127.0.0.1:8888"
 
 func listenAndServeHTTP() {
 	router := mux.NewRouter()
 	router.HandleFunc("/api", handleAPI).Methods("GET")
+	router.HandleFunc("/mms", handleMMS).Methods("GET")
+	router.HandleFunc("/support", handleSupport).Methods("GET")
+	router.HandleFunc("/incident", handleIncident).Methods("GET")
 
-	log.Fatal(http.ListenAndServe(serverAddr, router))
+	fileServer := http.FileServer(http.Dir(config.GlobalConfig.WebDir))
+	router.PathPrefix("/").Handler(http.StripPrefix("/", fileServer))
+	log.Fatal(http.ListenAndServe(config.GlobalConfig.SimulatorAddr, router))
 }
 
 func handleAPI(w http.ResponseWriter, r *http.Request) {
@@ -39,6 +44,42 @@ func handleAPI(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	_, _ = w.Write(response)
+}
+
+func handleMMS(w http.ResponseWriter, r *http.Request) {
+	data, err := os.ReadFile(config.GlobalConfig.MMSFile)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		_, _ = w.Write([]byte{})
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	_, _ = w.Write(data)
+}
+
+func handleSupport(w http.ResponseWriter, r *http.Request) {
+	data, err := os.ReadFile(config.GlobalConfig.SupportFile)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		_, _ = w.Write([]byte{})
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write(data)
+}
+
+func handleIncident(w http.ResponseWriter, r *http.Request) {
+	data, err := os.ReadFile(config.GlobalConfig.IncidentFile)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		_, _ = w.Write([]byte{})
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	_, _ = w.Write(data)
 }
 
 func StartServer() {

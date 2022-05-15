@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 )
@@ -17,6 +18,7 @@ type Config struct {
 	SupportFile   string `yaml:"support_file"`
 	IncidentAddr  string `yaml:"incident_addr"`
 	IncidentFile  string `yaml:"incident_file"`
+	WebDir        string `yaml:"web_dir"`
 }
 
 var GlobalConfig Config
@@ -26,11 +28,13 @@ func NewConfig(file string) Config {
 
 	yamlFile, err := ioutil.ReadFile(file)
 	if err != nil {
+		fmt.Println(err.Error())
 		return GetDefaultConfig()
 	}
 
 	err = yaml.Unmarshal(yamlFile, &config)
 	if err != nil {
+		fmt.Println(err.Error())
 		return GetDefaultConfig()
 	}
 
@@ -38,6 +42,7 @@ func NewConfig(file string) Config {
 }
 
 func GetDefaultConfig() Config {
+	fmt.Println("get default config")
 	const dir = "/Users/Aleksandr Milyutin/GolandProjects/skillbox-diploma/cmd/data/"
 	const addr = "127.0.0.1:9999"
 
@@ -54,6 +59,7 @@ func GetDefaultConfig() Config {
 	config.SupportFile = dir + "support.json"
 	config.IncidentAddr = "http://" + addr + "/incident"
 	config.IncidentFile = dir + "incident.json"
+	config.WebDir = "/Users/Aleksandr Milyutin/GolandProjects/skillbox-diploma/cmd/data/"
 
 	return config
 }
