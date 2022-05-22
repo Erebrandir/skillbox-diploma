@@ -3,16 +3,14 @@ package main
 import (
 	"os"
 	"os/signal"
-	"skillbox-diploma/pkg/config"
-	"skillbox-diploma/pkg/server"
-	"skillbox-diploma/pkg/simulator"
+	"skillbox-diploma/config"
+	"skillbox-diploma/internal/server"
 	"syscall"
 )
 
 func main() {
-	config.GlobalConfig = config.NewConfig("config.yaml")
+	config.GlobalConfig = config.GetDefaultConfig()
 
-	go simulator.StartSimulatorServer()
 	go server.StartServer()
 
 	exit := make(chan os.Signal, 0)
