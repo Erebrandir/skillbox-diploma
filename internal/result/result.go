@@ -1,7 +1,7 @@
 package result
 
 import (
-	"skillbox-diploma/config"
+	"skillbox-diploma/internal/config"
 	"skillbox-diploma/internal/status/billing"
 	"skillbox-diploma/internal/status/email"
 	"skillbox-diploma/internal/status/incident"

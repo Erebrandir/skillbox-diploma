@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 	"os/signal"
-	"skillbox-diploma/config"
+	"skillbox-diploma/internal/config"
 	"skillbox-diploma/internal/server"
 	"syscall"
 )

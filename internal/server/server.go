@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"skillbox-diploma/config"
+	"skillbox-diploma/internal/config"
 	"skillbox-diploma/internal/result"
 )
 
