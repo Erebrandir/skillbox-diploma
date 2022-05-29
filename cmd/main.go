@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	config.GlobalConfig = config.GetDefaultConfig()
+	config.GlobalConfig = config.NewConfig("config/config.yaml")
 
 	go server.StartServer()
 
