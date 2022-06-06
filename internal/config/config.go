@@ -7,7 +7,7 @@ import (
 )
 
 type Config struct {
-	SimulatorAddr string `yaml:"simulator_addr"`
+	Addr          string `yaml:"addr"`
 	SMSFile       string `yaml:"sms_file"`
 	MMSAddr       string `yaml:"mms_addr"`
 	MMSFile       string `yaml:"mms_file"`
@@ -50,7 +50,7 @@ func GetDefaultConfig() Config {
 
 	var config Config
 
-	config.SimulatorAddr = addr
+	config.Addr = addr
 	config.SMSFile = dir + "sms.data"
 	config.MMSAddr = "http://" + addr + "/mms"
 	config.MMSFile = dir + "mms.json"

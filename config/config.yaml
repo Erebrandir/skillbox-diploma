@@ -1,4 +1,4 @@
-simulator_addr: 127.0.0.1:9999
+addr: 127.0.0.1:9999
 sms_file: sms.data
 mms_addr: http://127.0.0.1:9999/mms
 mms_file: mms.json

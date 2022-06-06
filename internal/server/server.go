@@ -19,7 +19,7 @@ func listenAndServeHTTP() {
 
 	fileServer := http.FileServer(http.Dir(config.GlobalConfig.WebDir))
 	router.PathPrefix("/").Handler(http.StripPrefix("/", fileServer))
-	log.Fatal(http.ListenAndServe(config.GlobalConfig.SimulatorAddr, router))
+	log.Fatal(http.ListenAndServe(config.GlobalConfig.Addr, router))
 }
 
 func handleAPI(w http.ResponseWriter, r *http.Request) {
@@ -67,7 +67,7 @@ func handleSupport(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
-	w.Write(data)
+	_, _ = w.Write(data)
 }
 
 func handleIncident(w http.ResponseWriter, r *http.Request) {
