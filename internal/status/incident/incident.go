@@ -3,8 +3,8 @@ package incident
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"net/http"
+	"os"
+	"skillbox-diploma/internal/config"
 )
 
 type IncidentData struct {
@@ -15,25 +15,15 @@ type IncidentData struct {
 func StatusIncident(url string) []IncidentData {
 	result := make([]IncidentData, 0)
 
-	resp, err := http.Get(url)
-	if err != nil {
-		fmt.Println(err.Error() + `: ` + url)
-		return []IncidentData{}
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return []IncidentData{}
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
+	data, err := os.ReadFile(config.GlobalConfig.IncidentFile)
 	if err != nil {
 		fmt.Println(err.Error())
 		return []IncidentData{}
 	}
 
-	if err := json.Unmarshal(body, &result); err != nil {
+	if err := json.Unmarshal(data, &result); err != nil {
 		return []IncidentData{}
 	}
+
 	return result
 }

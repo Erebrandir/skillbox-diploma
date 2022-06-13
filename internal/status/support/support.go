@@ -3,8 +3,8 @@ package support
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"net/http"
+	"os"
+	"skillbox-diploma/internal/config"
 )
 
 type SupportData struct {
@@ -15,23 +15,13 @@ type SupportData struct {
 func StatusSupport(url string) []SupportData {
 	result := make([]SupportData, 0)
 
-	resp, err := http.Get(url)
-	if err != nil {
-		fmt.Println(err.Error() + `: ` + url)
-		return []SupportData{}
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return []SupportData{}
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
+	data, err := os.ReadFile(config.GlobalConfig.SupportFile)
 	if err != nil {
 		fmt.Println(err.Error())
 		return []SupportData{}
 	}
-	if err := json.Unmarshal(body, &result); err != nil {
+
+	if err := json.Unmarshal(data, &result); err != nil {
 		return []SupportData{}
 	}
 

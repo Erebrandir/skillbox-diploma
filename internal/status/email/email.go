@@ -19,9 +19,9 @@ type EmailData struct {
 func Get3MinDeliveryTimeByCountry(data []EmailData, code string) []EmailData {
 	result := make([]EmailData, 0)
 	for _, elem := range data {
-		//country := check.GetCountryForCode(elem.Country) //
+		country := check.GetCountryForCode(elem.Country) //
 		if elem.Country == code {
-			//elem.Country = country //
+			elem.Country = country //
 			result = append(result, elem)
 		}
 	}
@@ -38,9 +38,9 @@ func Get3MinDeliveryTimeByCountry(data []EmailData, code string) []EmailData {
 func Get3MaxDeliveryTimeByCountry(data []EmailData, code string) []EmailData {
 	result := make([]EmailData, 0)
 	for _, elem := range data {
-		//country := check.GetCountryForCode(elem.Country) //
+		country := check.GetCountryForCode(elem.Country) //
 		if elem.Country == code {
-			//elem.Country = country //
+			elem.Country = country //
 			result = append(result, elem)
 		}
 	}

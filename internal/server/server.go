@@ -5,7 +5,6 @@ import (
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
-	"os"
 	"skillbox-diploma/internal/config"
 	"skillbox-diploma/internal/result"
 )
@@ -13,9 +12,6 @@ import (
 func listenAndServeHTTP() {
 	router := mux.NewRouter()
 	router.HandleFunc("/api", handleAPI).Methods("GET")
-	router.HandleFunc("/mms", handleMMS).Methods("GET")
-	router.HandleFunc("/support", handleSupport).Methods("GET")
-	router.HandleFunc("/incident", handleIncident).Methods("GET")
 
 	fileServer := http.FileServer(http.Dir(config.GlobalConfig.WebDir))
 	router.PathPrefix("/").Handler(http.StripPrefix("/", fileServer))
@@ -44,42 +40,6 @@ func handleAPI(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	_, _ = w.Write(response)
-}
-
-func handleMMS(w http.ResponseWriter, r *http.Request) {
-	data, err := os.ReadFile(config.GlobalConfig.MMSFile)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		_, _ = w.Write([]byte{})
-		return
-	}
-
-	w.WriteHeader(http.StatusOK)
-	_, _ = w.Write(data)
-}
-
-func handleSupport(w http.ResponseWriter, r *http.Request) {
-	data, err := os.ReadFile(config.GlobalConfig.SupportFile)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		_, _ = w.Write([]byte{})
-		return
-	}
-
-	w.WriteHeader(http.StatusOK)
-	_, _ = w.Write(data)
-}
-
-func handleIncident(w http.ResponseWriter, r *http.Request) {
-	data, err := os.ReadFile(config.GlobalConfig.IncidentFile)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		_, _ = w.Write([]byte{})
-		return
-	}
-
-	w.WriteHeader(http.StatusOK)
-	_, _ = w.Write(data)
 }
 
 func StartServer() {

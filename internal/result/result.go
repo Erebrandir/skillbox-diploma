@@ -3,7 +3,6 @@ package result
 import (
 	"skillbox-diploma/internal/config"
 	"skillbox-diploma/internal/status/billing"
-	"skillbox-diploma/internal/status/check"
 	"skillbox-diploma/internal/status/email"
 	"skillbox-diploma/internal/status/incident"
 	"skillbox-diploma/internal/status/mms"
@@ -96,8 +95,8 @@ func getEmailStat() {
 	data := email.StatusEmail(config.GlobalConfig.EmailFile)
 	countries := make(map[string]int)
 	for _, elem := range data {
-		country := check.GetCountryForCode(elem.Country) //
-		elem.Country = country                           //
+		//country := check.GetCountryForCode(elem.Country)
+		//elem.Country = country
 		countries[elem.Country]++
 	}
 

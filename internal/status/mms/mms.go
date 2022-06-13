@@ -3,8 +3,8 @@ package mms
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"net/http"
+	"os"
+	"skillbox-diploma/internal/config"
 	"skillbox-diploma/internal/status/check"
 )
 
@@ -51,24 +51,13 @@ func CheckMMSData(data []MMSData) []MMSData {
 func StatusMMS(url string) []MMSData {
 	result := make([]MMSData, 0)
 
-	resp, err := http.Get(url)
-	if err != nil {
-		fmt.Println(err.Error() + `: ` + url)
-		return []MMSData{}
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return []MMSData{}
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
+	data, err := os.ReadFile(config.GlobalConfig.MMSFile)
 	if err != nil {
 		fmt.Println(err.Error())
 		return []MMSData{}
 	}
 
-	if err := json.Unmarshal(body, &result); err != nil {
+	if err := json.Unmarshal(data, &result); err != nil {
 		return []MMSData{}
 	}
 

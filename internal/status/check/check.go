@@ -69,27 +69,3 @@ func IsProviderEmail(provider string) bool {
 		"Live", "RediffMail", "GMX", "Protonmail", "Yandex", "Mail.ru"}
 	return contains(providers, provider)
 }
-
-func IsPositiveInt(value string) bool {
-	i, err := strconv.Atoi(value)
-	if err != nil {
-		return false
-	}
-
-	if i >= 0 {
-		return true
-	}
-	return false
-}
-
-func IsPositiveFloat(value string) bool {
-	f, err := strconv.ParseFloat(value, 32)
-	if err != nil {
-		return false
-	}
-
-	if f >= 0 {
-		return true
-	}
-	return false
-}
